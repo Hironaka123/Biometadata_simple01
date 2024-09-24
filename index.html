@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Experiment Metadata</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select {
+            margin-top: 5px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Bio Experiment Metadata</h1>
+        <form id="metadataForm">
+            <label for="experimenter">Experimenter:</label>
+            <input type="text" id="experimenter" name="experimenter" required>
+
+            <label for="experimentDate">Experiment Date:</label>
+            <input type="date" id="experimentDate" name="experimentDate" required>
+
+            <label for="assay">Assay:</label>
+            <input type="text" id="assay" name="assay" required>
+
+            <label for="cellType">Cell Type:</label>
+            <select id="cellType" name="cellType" required>
+                <option value="">Select cell type</option>
+                <option value="HeLa">HeLa</option>
+                <option value="HEK293">HEK293</option>
+                <option value="CHO">CHO</option>
+                <option value="3T3">3T3</option>
+                <option value="U2OS">U2OS</option>
+            </select>
+
+            <label for="protocol">Protocol:</label>
+            <select id="protocol" name="protocol" required>
+                <option value="">Select protocol</option>
+                <option value="PCR">PCR</option>
+                <option value="Western Blot">Western Blot</option>
+                <option value="ELISA">ELISA</option>
+                <option value="Flow Cytometry">Flow Cytometry</option>
+                <option value="Immunofluorescence">Immunofluorescence</option>
+            </select>
+
+            <button type="submit">Submit Experiment Metadata</button>
+        </form>
+    </div>
+    <div id="toast" class="toast">Metadata submitted successfully!</div>
+
+    <script>
+        document.getElementById('metadataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                experimenter: document.getElementById('experimenter').value,
+                experimentDate: document.getElementById('experimentDate').value,
+                assay: document.getElementById('assay').value,
+                cellType: document.getElementById('cellType').value,
+                protocol: document.getElementById('protocol').value
+            };
+
+            console.log('Submitted data:', formData);
+
+            // Show toast notification
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+
+            // Reset form
+            this.reset();
+        });
+    </script>
+</body>
+</html>
