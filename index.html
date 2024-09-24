@@ -11,9 +11,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
+
         .card {
             background-color: white;
             border-radius: 8px;
@@ -22,37 +25,61 @@
             width: 100%;
             max-width: 400px;
         }
+
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
+
         form {
             display: flex;
             flex-direction: column;
         }
+
         label {
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
+            color: #555;
         }
+
         input, select {
             margin-top: 5px;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
         }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
         button {
             margin-top: 20px;
-            padding: 10px;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.1s;
+            font-size: 16px;
+            font-weight: bold;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
         .toast {
             position: fixed;
             top: 20px;
@@ -62,6 +89,55 @@
             padding: 15px;
             border-radius: 4px;
             display: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #cellArea, #animalArea {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group-inline {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-inline input {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .input-group-inline span {
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -69,34 +145,114 @@
     <div class="card">
         <h1>Bio Experiment Metadata</h1>
         <form id="metadataForm">
-            <label for="experimenter">Experimenter:</label>
-            <input type="text" id="experimenter" name="experimenter" required>
+            <div class="input-group">
+                <label for="experimenter">Experimenter:</label>
+                <input type="text" id="experimenter" name="experimenter" required>
+            </div>
 
-            <label for="experimentDate">Experiment Date:</label>
-            <input type="date" id="experimentDate" name="experimentDate" required>
+            <div class="input-group">
+                <label for="experimentDate">Experiment Date:</label>
+                <input type="date" id="experimentDate" name="experimentDate" required>
+            </div>
 
-            <label for="assay">Assay:</label>
-            <input type="text" id="assay" name="assay" required>
+            <div class="input-group">
+                <label for="assay">Assay:</label>
+                <input type="text" id="assay" name="assay" required>
+            </div>
 
-            <label for="cellType">Cell Type:</label>
-            <select id="cellType" name="cellType" required>
-                <option value="">Select cell type</option>
-                <option value="HeLa">HeLa</option>
-                <option value="HEK293">HEK293</option>
-                <option value="CHO">CHO</option>
-                <option value="3T3">3T3</option>
-                <option value="U2OS">U2OS</option>
-            </select>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="experimentType" value="cell" required> Cell
+                </label>
+                <label>
+                    <input type="radio" name="experimentType" value="animal" required> Animal
+                </label>
+            </div>
 
-            <label for="protocol">Protocol:</label>
-            <select id="protocol" name="protocol" required>
-                <option value="">Select protocol</option>
-                <option value="PCR">PCR</option>
-                <option value="Western Blot">Western Blot</option>
-                <option value="ELISA">ELISA</option>
-                <option value="Flow Cytometry">Flow Cytometry</option>
-                <option value="Immunofluorescence">Immunofluorescence</option>
-            </select>
+            <div id="cellArea" class="hidden">
+                <div class="input-group">
+                    <label for="cellType">Cell Type:</label>
+                    <select id="cellType" name="cellType">
+                        <option value="">Select cell type</option>
+                        <option value="HeLa">HeLa</option>
+                        <option value="HEK293">HEK293</option>
+                        <option value="CHO">CHO</option>
+                        <option value="3T3">3T3</option>
+                        <option value="U2OS">U2OS</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="animalArea" class="hidden">
+                <div class="input-group">
+                    <label for="animalType">Animal Type:</label>
+                    <select id="animalType" name="animalType">
+                        <option value="">Select animal type</option>
+                        <option value="Mouse">Mouse</option>
+                        <option value="Rat">Rat</option>
+                        <option value="Rabbit">Rabbit</option>
+                        <option value="Zebrafish">Zebrafish</option>
+                        <option value="Drosophila">Drosophila</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="strain">Strain:</label>
+                    <select id="strain" name="strain">
+                        <option value="">Select strain</option>
+                        <option value="C57BL/6">C57BL/6 (Mouse)</option>
+                        <option value="BALB/c">BALB/c (Mouse)</option>
+                        <option value="Sprague Dawley">Sprague Dawley (Rat)</option>
+                        <option value="Wistar">Wistar (Rat)</option>
+                        <option value="New Zealand White">New Zealand White (Rabbit)</option>
+                        <option value="AB">AB (Zebrafish)</option>
+                        <option value="Oregon-R">Oregon-R (Drosophila)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="age">Age:</label>
+                    <div class="input-group-inline">
+                        <input type="number" id="age" name="age" min="0">
+                        <span>Week(s)</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="sex">Sex:</label>
+                    <select id="sex" name="sex">
+                        <option value="">Select sex</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="tissue">Tissue:</label>
+                    <select id="tissue" name="tissue">
+                        <option value="">Select tissue</option>
+                        <option value="Brain">Brain</option>
+                        <option value="Liver">Liver</option>
+                        <option value="Heart">Heart</option>
+                        <option value="Kidney">Kidney</option>
+                        <option value="Lung">Lung</option>
+                        <option value="Muscle">Muscle</option>
+                        <option value="Spleen">Spleen</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="protocol">Protocol:</label>
+                <select id="protocol" name="protocol" required>
+                    <option value="">Select protocol</option>
+                    <option value="PCR">PCR</option>
+                    <option value="Western Blot">Western Blot</option>
+                    <option value="ELISA">ELISA</option>
+                    <option value="Flow Cytometry">Flow Cytometry</option>
+                    <option value="Immunofluorescence">Immunofluorescence</option>
+                </select>
+            </div>
 
             <button type="submit">Submit Experiment Metadata</button>
         </form>
@@ -104,16 +260,43 @@
     <div id="toast" class="toast">Metadata submitted successfully!</div>
 
     <script>
-        document.getElementById('metadataForm').addEventListener('submit', function(e) {
+        const form = document.getElementById('metadataForm');
+        const cellArea = document.getElementById('cellArea');
+        const animalArea = document.getElementById('animalArea');
+        const experimentTypeRadios = document.getElementsByName('experimentType');
+
+        experimentTypeRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'cell') {
+                    cellArea.classList.remove('hidden');
+                    animalArea.classList.add('hidden');
+                } else if (this.value === 'animal') {
+                    animalArea.classList.remove('hidden');
+                    cellArea.classList.add('hidden');
+                }
+            });
+        });
+
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const formData = {
                 experimenter: document.getElementById('experimenter').value,
                 experimentDate: document.getElementById('experimentDate').value,
                 assay: document.getElementById('assay').value,
-                cellType: document.getElementById('cellType').value,
+                experimentType: document.querySelector('input[name="experimentType"]:checked').value,
                 protocol: document.getElementById('protocol').value
             };
+
+            if (formData.experimentType === 'cell') {
+                formData.cellType = document.getElementById('cellType').value;
+            } else if (formData.experimentType === 'animal') {
+                formData.animalType = document.getElementById('animalType').value;
+                formData.strain = document.getElementById('strain').value;
+                formData.age = document.getElementById('age').value;
+                formData.sex = document.getElementById('sex').value;
+                formData.tissue = document.getElementById('tissue').value;
+            }
 
             console.log('Submitted data:', formData);
 
@@ -126,6 +309,8 @@
 
             // Reset form
             this.reset();
+            cellArea.classList.add('hidden');
+            animalArea.classList.add('hidden');
         });
     </script>
 </body>
